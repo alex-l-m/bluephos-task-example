@@ -41,7 +41,13 @@ end
 _ORCA_PROFILE = OrcaProfile(command=str(Path(os.environ["EBROOTORCA"]) / "orca"))
 
 def _orca_setup(atoms, multiplicity: int) -> None:
-    job_id = atoms.info["name"]
+    geometry_name = atoms.info["name"]
+    if multiplicity == 1:
+        job_id = f"{geometry_name}_singlet"
+    elif multiplicity == 3:
+        job_id = f"{geometry_name}_triplet"
+    else:
+        raise ValueError(f"Unexpected multiplicity: {multiplicity}")
     run_dir = Path("orca_runs") / str(job_id)
     # Delete the run directory if it already exists
     if run_dir.exists():
