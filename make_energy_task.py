@@ -51,9 +51,5 @@ def make_energy_task(setup_function, geometry_column: str, energy_column: str) -
 
     # Freeze the first three args; the resulting function expects only df.
     func = partial(energy_from_extxyz, setup_function, geometry_column, energy_column)
-    # dplutils requires a .__name__ field, which partiald on't have by default,
-    # even though it shouldn't
-    func.__name__ = f'{task_name}_partial'
-    func.__qualname__ = func.__name__
 
     return PipelineTask(task_name, func, batch_size=1, num_cpus=1)
