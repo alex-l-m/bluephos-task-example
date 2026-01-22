@@ -15,9 +15,12 @@ if not os.path.exists(ligand_image_outdir):
 structure_image_outdir = 'structure_images'
 if not os.path.exists(structure_image_outdir):
     os.mkdir(structure_image_outdir)
-xyzfile_outdir = 'xyz'
-if not os.path.exists(xyzfile_outdir):
-    os.mkdir(xyzfile_outdir)
+octahedral_file_outdir = 'octahedral_embed_xyz'
+if not os.path.exists(octahedral_file_outdir):
+    os.mkdir(octahedral_file_outdir)
+tblite_file_outdir = 'tblite_triplet_xyz'
+if not os.path.exists(tblite_file_outdir):
+    os.mkdir(tblite_file_outdir)
 for row in combined.itertuples():
     ligand_smiles = row.ligand_SMILES
     ligand_rdkit_mol = MolFromSmiles(ligand_smiles)
@@ -35,6 +38,11 @@ for row in combined.itertuples():
 
     isomer_id = row.isomer_identifier
     xyz_text = row.octahedral_embed_xyz
-    xyz_outpath = os.path.join(xyzfile_outdir, f"{isomer_id}.xyz")
+    xyz_outpath = os.path.join(octahedral_file_outdir, f"{isomer_id}.xyz")
+    with open(xyz_outpath, 'w') as f:
+        f.write(xyz_text)
+
+    xyz_text = row.tblite_triplet_optimized_xyz
+    xyz_outpath = os.path.join(tblite_file_outdir, f"{isomer_id}.xyz")
     with open(xyz_outpath, 'w') as f:
         f.write(xyz_text)
