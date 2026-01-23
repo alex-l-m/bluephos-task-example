@@ -6,12 +6,8 @@ from molblock_to_octahedral_geometries import MolblockToOctahedralGeometriesTask
 from make_ase_tasks import make_energy_task, make_optimization_task
 from setup_functions import tblite_singlet_setup, tblite_triplet_setup
 from dplutils.pipeline import PipelineGraph
-from dplutils.cli import get_argparser, cli_run
+from dplutils.cli import cli_run
 from dplutils.pipeline.ray import RayStreamGraphExecutor
-
-ap = get_argparser()
-ap.set_defaults(file='run.yaml')
-args = ap.parse_args()
 
 ray.init()
 
@@ -27,4 +23,4 @@ executor = RayStreamGraphExecutor(graph,
         generator=lambda: pd.read_csv("in.csv", chunksize=200),
 )
 
-cli_run(executor, args)
+cli_run(executor)
