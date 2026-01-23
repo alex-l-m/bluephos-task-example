@@ -38,8 +38,6 @@ end
 %maxcore 3000
 """
 
-_ORCA_PROFILE = OrcaProfile(command=str(Path(os.environ["EBROOTORCA"]) / "orca"))
-
 def _orca_setup(atoms, multiplicity: int) -> None:
     geometry_name = atoms.info["name"]
     if multiplicity == 1:
@@ -54,8 +52,10 @@ def _orca_setup(atoms, multiplicity: int) -> None:
         shutil.rmtree(run_dir)   # deletes dir and all contents
     run_dir.mkdir(parents=True)
 
+    orca_profile = OrcaProfile(command=str(Path(os.environ["EBROOTORCA"]) / "orca"))
+
     atoms.calc = ORCA(
-        profile=_ORCA_PROFILE,
+        profile=orca_profile,
         directory=str(run_dir),
         charge=0,
         mult=multiplicity,
