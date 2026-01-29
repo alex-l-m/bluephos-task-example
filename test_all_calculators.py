@@ -1,4 +1,4 @@
-from setup_functions import tblite_setup, orca_setup, uma_small_setup
+from setup_functions import uma_small_setup
 
 import pandas as pd
 from rdkit import Chem
@@ -28,7 +28,7 @@ irppy3.info["name"] = "irppy3"
 # (Two single-point energy evaluations per method: triplet then singlet.)
 results_rows = []
 
-for setup in [tblite_setup, orca_setup, uma_small_setup]:
+for setup in [uma_small_setup]:
     method_name = setup.__name__.replace("_setup", "")
 
     setup(0, 3, irppy3)

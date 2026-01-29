@@ -8,7 +8,6 @@ import torch
 from ase import Atoms
 from ase.calculators.orca import ORCA, OrcaProfile
 from fairchem.core import FAIRChemCalculator, pretrained_mlip
-from tblite.ase import TBLite
 
 
 # ----------------------------
@@ -39,32 +38,6 @@ def _uma_predictor_and_device() -> tuple[object, str]:
     device = "cuda" if torch.cuda.is_available() else "cpu"
     predictor = pretrained_mlip.get_predict_unit(_UMA_MODEL_NAME, device=device)
     return predictor, device
-
-
-# ----------------------------
-# TBLite (in-memory calculator)
-# ----------------------------
-
-def tblite_setup(charge: int, multiplicity: int, atoms: Atoms) -> None:
-    """
-    Attach a TBLite ASE calculator to `atoms`.
-
-    Required inputs:
-      - charge: total molecular charge (will be cast to int)
-      - multiplicity: total spin multiplicity (will be cast to int)
-      - atoms: ASE Atoms object (runtime checked)
-
-    Assumptions:
-      - TBLite method is whatever tblite uses by default (unless you change tblite defaults).
-      - This is intended for energies (and whatever properties TBLite supports) without
-        adding extra configuration knobs here.
-
-    Serialization note:
-      - The calculator object is constructed inside this function.
-    """
-    atoms.calc = TBLite(charge=int(charge),
-                        multiplicity=int(multiplicity))
-
 
 # ----------------------------
 # ORCA (file-based calculator)
